@@ -12,15 +12,27 @@ def réponse_pour_route(route, verbe, headers):
     print(verbe, route)
     réponse = Réponse()
 
-    texte = "Bonjour !"
     global COMPTE
     COMPTE += 1
-    texte += f"\nVous avez rafraîchi cette page {COMPTE} fois 😇"
+    texte = f"""<!DOCTYPE html>
+<html>
+<head>
+    <title>Servilo :) </title>
+</head>
+
+<body>
+<h2>Bonjour monde!</h2>
+
+Vous avez rafraîchi cette page <code>{COMPTE}</code> fois
+
+</body>
+</html>
+    """
 
     réponse.texte = texte
 
     réponse.code = 200
 
-    réponse.headers = {"Content-Type": "text/plain; charset=utf-8"}
+    réponse.headers = {"Content-Type": "text/html; charset=utf-8"}
 
     return réponse
