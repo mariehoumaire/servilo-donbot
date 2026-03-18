@@ -23,7 +23,15 @@ def réponse_pour_route(route, verbe, headers):
 def servir_fichier(route):
     réponse = Réponse()
 
-    chemin = Path(route)
+    if route == "/":
+        chemin = Path("index.html")
+    else:
+        chemin = Path(route[1:])
+
+    if not chemin.exists():
+        réponse.code = 404
+        return réponse
+
     texte = chemin.read_text()
 
     réponse.texte = texte
