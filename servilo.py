@@ -64,7 +64,7 @@ def envoie_réponse(code, reason, headers, contenu):
     for clé, valeur in headers.items():
         lignes.append(f"{clé}: {valeur}")
 
-    taille = len(contenu)
+    taille = len(contenu) + 4
     lignes.append(f"Content-Length: {taille}")
 
     en_tête = "\r\n".join(lignes)
