@@ -17,9 +17,6 @@ def main():
                 if not données:
                     return
                 requête = données.decode("UTF-8", errors="replace")
-                print("--- Requête: ---")
-                print(requête)
-                print("---")
                 réponse = traite_requête(requête)
                 if réponse:
                     données = réponse.encode("UTF-8")

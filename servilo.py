@@ -23,13 +23,9 @@ def traite_requête(message):
         print("Protocole inconnu:", PROTOCOLE)
         return
 
-    print(f"{verbe=}, {route=}, {protocole=}")
+    print(f"{verbe} {route}")
 
-    headers = traite_entête_requête(lignes[1:])
-
-    user_agent = headers.get("user-agent")
-    if user_agent:
-        print("Votre user agent est", user_agent)
+    _headers = traite_entête_requête(lignes[1:])
 
     message = "Bonjour !"
     global COMPTE
