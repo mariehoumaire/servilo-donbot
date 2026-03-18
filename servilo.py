@@ -8,7 +8,7 @@ class Réponse:
         self.headers = {}
 
 
-def réponse_pour_route(route, verbe):
+def réponse_pour_route(route, verbe, headers):
     print(verbe, route)
     réponse = Réponse()
 

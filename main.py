@@ -17,8 +17,9 @@ def traite_requête(message):
 
     première_ligne = lignes[0]
     verbe, route, _protocole = première_ligne.split()
+    headers = parse_headers(lignes[1:])
 
-    réponse = réponse_pour_route(route, verbe)
+    réponse = réponse_pour_route(route, verbe, headers)
 
     status = HTTPStatus(réponse.code)
 
@@ -34,6 +35,17 @@ def traite_requête(message):
         headers,
         réponse.texte,
     )
+
+
+def parse_headers(lignes):
+    headers = {}
+    for ligne in lignes:
+        if ":" not in ligne:
+            continue
+        clé, valeur = ligne.split(":", maxsplit=1)
+        clé = clé.lower()
+        headers[clé] = valeur.strip()
+    return headers
 
 
 def envoie_réponse(code, reason, headers, contenu):
