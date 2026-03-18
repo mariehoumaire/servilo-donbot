@@ -24,9 +24,11 @@ def traite_requête(message):
     verbe, route, _protocole = première_ligne.split()
     headers = parse_headers(lignes[1:])
 
+    print("<", verbe, route)
     réponse = réponse_pour_route(route, verbe, headers)
 
     status = HTTPStatus(réponse.code)
+    print(">", status.value)
 
     taille = len(réponse.texte.encode()) + 4
     headers = réponse.headers
