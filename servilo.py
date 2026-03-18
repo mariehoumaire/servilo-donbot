@@ -33,10 +33,15 @@ def traite_requête(message):
         if "Linux" in user_agent:
             print("Et vous utilisez Linux :)")
 
-    agent = user_agents.parse(user_agent)
-    print(agent)
+        agent = user_agents.parse(user_agent)
+        print(agent)
 
-    return texte_réponse()
+    return envoie_réponse(
+        200,
+        "0K",
+        {"Content-Type": "text/plain", "Connection": "close"},
+        "Bonjour, monde",
+    )
 
 
 def traite_entête_requête(lignes):
@@ -51,10 +56,17 @@ def traite_entête_requête(lignes):
     return headers
 
 
-def texte_réponse():
-    return """HTTP/1.1 200 OK
-Content-Type: text/plain
-Connection: close
+def envoie_réponse(code, reason, headers, contenu):
+    lignes = []
+    première_ligne = f"{PROTOCOLE} {code} {reason}"
+    lignes.append(première_ligne)
 
-Bonjour, monde
-"""
+    for clé, valeur in headers.items():
+        lignes.append(f"{clé}: {valeur}")
+
+    taille = len(contenu)
+    lignes.append(f"Content-Length: {taille}")
+
+    en_tête = "\r\n".join(lignes)
+
+    return en_tête + "\r\n\r\n" + contenu + "\r\n\r\n"
