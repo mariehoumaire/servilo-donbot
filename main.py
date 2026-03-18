@@ -1,4 +1,6 @@
+import os
 import socket
+import threading
 from servilo import réponse_pour_route
 from http import HTTPStatus
 
@@ -61,7 +63,7 @@ def envoie_réponse(code, reason, headers, contenu):
     return en_tête + "\r\n\r\n" + contenu + "\r\n\r\n"
 
 
-def main():
+def main_loop():
     serveur = socket.create_server(("localhost", PORT))
     print("Servilo écoute sur le port", PORT)
     with serveur:
@@ -77,6 +79,14 @@ def main():
                 if réponse:
                     données = réponse.encode("UTF-8")
                     connection.sendall(données)
+
+
+def main():
+    pid = os.getpid()
+    thread = threading.Thread(target=main_loop)
+    thread.start()
+    input("Appuyez sur une touche pour quitter\n")
+    os.kill(pid, 9)
 
 
 if __name__ == "__main__":
