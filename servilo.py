@@ -1,3 +1,6 @@
+import user_agents
+
+
 def traite_requête(message):
     """
     Recoit un message
@@ -23,6 +26,9 @@ def traite_requête(message):
         print("Votre user agent est", user_agent)
         if "Linux" in user_agent:
             print("Et vous utilisez Linux :)")
+
+    agent = user_agents.parse(user_agent)
+    print(agent)
 
 
 def traite_entête_requête(lignes):
