@@ -1,5 +1,3 @@
-import user_agents
-
 PROTOCOLE = "HTTP/1.1"
 
 COMPTE = 0
@@ -32,11 +30,6 @@ def traite_requête(message):
     user_agent = headers.get("user-agent")
     if user_agent:
         print("Votre user agent est", user_agent)
-        if "Linux" in user_agent:
-            print("Et vous utilisez Linux :)")
-
-        agent = user_agents.parse(user_agent)
-        print(agent)
 
     message = "Bonjour !"
     global COMPTE
