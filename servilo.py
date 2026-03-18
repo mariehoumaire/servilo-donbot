@@ -39,7 +39,7 @@ def traite_requête(message):
     return envoie_réponse(
         200,
         "0K",
-        {"Content-Type": "text/plain", "Connection": "close"},
+        {"Content-Type": "text/plain", "Connection": "keep-alive"},
         "Bonjour, monde",
     )
 

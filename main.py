@@ -24,8 +24,6 @@ def main():
                 if réponse:
                     données = réponse.encode("UTF-8")
                     connection.sendall(données)
-                    connection.close()
-                    return
 
 
 if __name__ == "__main__":
