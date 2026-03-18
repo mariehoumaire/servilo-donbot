@@ -1,5 +1,7 @@
 import user_agents
 
+PROTOCOLE = "HTTP/1.1"
+
 
 def traite_requête(message):
     """
@@ -17,6 +19,10 @@ def traite_requête(message):
 
     verbe, route, protocole = mots
 
+    if protocole != PROTOCOLE:
+        print("Protocole inconnu:", PROTOCOLE)
+        return
+
     print(f"{verbe=}, {route=}, {protocole=}")
 
     headers = traite_entête_requête(lignes[1:])
@@ -30,6 +36,8 @@ def traite_requête(message):
     agent = user_agents.parse(user_agent)
     print(agent)
 
+    return texte_réponse()
+
 
 def traite_entête_requête(lignes):
     headers = {}
@@ -41,3 +49,12 @@ def traite_entête_requête(lignes):
         headers[clé] = valeur.strip()
 
     return headers
+
+
+def texte_réponse():
+    return """HTTP/1.1 200 OK
+Content-Type: text/plain
+Connection: close
+
+Bonjour, monde
+"""
