@@ -41,12 +41,12 @@ def traite_requête(message):
     message = "Bonjour !"
     global COMPTE
     COMPTE += 1
-    message += f"\nVous avez rafraîchi cette page {COMPTE} fois :)"
+    message += f"\nVous avez rafraîchi cette page {COMPTE} fois 😇"
 
     return envoie_réponse(
         200,
         "0K",
-        {"Content-Type": "text/plain", "Connection": "keep-alive"},
+        {"Content-Type": "text/plain; charset=UTF-8", "Connection": "keep-alive"},
         message,
     )
 
@@ -71,7 +71,7 @@ def envoie_réponse(code, reason, headers, contenu):
     for clé, valeur in headers.items():
         lignes.append(f"{clé}: {valeur}")
 
-    taille = len(contenu) + 4
+    taille = len(contenu.encode()) + 4
     lignes.append(f"Content-Length: {taille}")
 
     en_tête = "\r\n".join(lignes)
