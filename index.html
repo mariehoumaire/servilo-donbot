@@ -1,13 +1,23 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
-<head>
+  <head>
     <title>Servilo</title>
     <link rel="stylesheet" href="style.css" />
-</head>
+  </head>
 
-<body>
-    <h1>Hello!</h1>
-</body>
+  <body>
+    <h1>Bonjour</h1>
 
+    Signez la pétition !
+
+    <form method="POST" action="sign">
+      <label> Name: </label>
+      <input name="nom" required />
+      <label>Code postal</label>
+      <input name="code_postal" type="number" />
+      <input type="submit" value="Signez" />
+    </form>
+
+    <p>{{ compte }} signatures</p>
+  </body>
 </html>

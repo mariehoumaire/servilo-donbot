@@ -4,6 +4,7 @@ import socket
 import threading
 from servilo import réponse_pour_route
 from http import HTTPStatus
+from urllib.parse import parse_qs
 
 PORT = 5000
 TAILLE_REQUÊTE = 1020
@@ -18,14 +19,26 @@ def traite_requête(message):
 
     Renvoie une réponse
     """
-    lignes = message.splitlines()
+
+    parties = message.split("\r\n\r\n")
+    en_tête = parties[0]
+
+    corps = parties[1]
+
+    lignes = en_tête.splitlines()
 
     première_ligne = lignes[0]
     verbe, route, _protocole = première_ligne.split()
     headers = parse_headers(lignes[1:])
 
+    content_type = headers.get("content-type")
+    if content_type == "application/x-www-form-urlencoded":
+        form = parse_qs(corps)
+    else:
+        form = None
+
     print("<", verbe, route)
-    réponse = réponse_pour_route(route, verbe, headers)
+    réponse = réponse_pour_route(route, verbe, headers, form)
 
     status = HTTPStatus(réponse.code)
     print(">", status.value)

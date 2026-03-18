@@ -11,17 +11,32 @@ EXTENSIONS_CONNUES = {
 
 
 class Réponse:
-    def __init__(self):
-        self.texte = ""
-        self.code = 200
-        self.headers = {}
+    def __init__(self, texte="", code=200, headers=None):
+        self.texte = texte
+        self.code = code
+        self.headers = headers or {}
 
 
-def réponse_pour_route(route, verbe, headers):
+def réponse_pour_route(route, verbe, headers, form):
     if verbe == "GET":
         return servir_fichier(route)
+    if verbe == "POST" and form:
+        return gérer_formulaire(form)
     else:
         return Réponse(texte=f"verbe inconnu: {verbe}", code=405)
+
+
+def gérer_formulaire(form):
+    print(f"{form=}")
+    réponse = Réponse()
+
+    global COMPTE
+    COMPTE += 1
+
+    réponse.code = 303
+    réponse.headers["location"] = "/"
+
+    return réponse
 
 
 def servir_fichier(route):
@@ -40,6 +55,8 @@ def servir_fichier(route):
     content_type = EXTENSIONS_CONNUES.get(extension)
 
     texte = chemin.read_text()
+
+    texte = texte.replace("{{ compte }}", str(COMPTE))
 
     réponse.texte = texte
 
