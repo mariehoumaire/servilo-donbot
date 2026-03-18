@@ -1,68 +1,26 @@
-PROTOCOLE = "HTTP/1.1"
-
 COMPTE = 0
 
 
-def traite_requête(message):
-    """
-    Recoit un message
+class Réponse:
+    def __init__(self):
+        self.texte = ""
+        self.code = 200
+        self.headers = {}
 
-    Renvoie une réponse
-    """
-    lignes = message.splitlines()
 
-    première_ligne = lignes[0]
-    mots = première_ligne.split()
-    if len(mots) != 3:
-        print("Première ligne invalide")
-        return ""
+def réponse_pour_route(route, verbe):
+    print(verbe, route)
+    réponse = Réponse()
 
-    verbe, route, protocole = mots
-
-    if protocole != PROTOCOLE:
-        print("Protocole inconnu:", PROTOCOLE)
-        return
-
-    print(f"{verbe} {route}")
-
-    _headers = traite_entête_requête(lignes[1:])
-
-    message = "Bonjour !"
+    texte = "Bonjour !"
     global COMPTE
     COMPTE += 1
-    message += f"\nVous avez rafraîchi cette page {COMPTE} fois 😇"
+    texte += f"\nVous avez rafraîchi cette page {COMPTE} fois 😇"
 
-    return envoie_réponse(
-        200,
-        "0K",
-        {"Content-Type": "text/plain; charset=UTF-8", "Connection": "keep-alive"},
-        message,
-    )
+    réponse.texte = texte
 
+    réponse.code = 200
 
-def traite_entête_requête(lignes):
-    headers = {}
-    for ligne in lignes:
-        if ":" not in ligne:
-            continue
-        clé, valeur = ligne.split(":", maxsplit=1)
-        clé = clé.lower()
-        headers[clé] = valeur.strip()
+    réponse.headers = {"Content-Type": "text/plain; charset=utf-8"}
 
-    return headers
-
-
-def envoie_réponse(code, reason, headers, contenu):
-    lignes = []
-    première_ligne = f"{PROTOCOLE} {code} {reason}"
-    lignes.append(première_ligne)
-
-    for clé, valeur in headers.items():
-        lignes.append(f"{clé}: {valeur}")
-
-    taille = len(contenu.encode()) + 4
-    lignes.append(f"Content-Length: {taille}")
-
-    en_tête = "\r\n".join(lignes)
-
-    return en_tête + "\r\n\r\n" + contenu + "\r\n\r\n"
+    return réponse
