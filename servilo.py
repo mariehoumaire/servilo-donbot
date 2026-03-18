@@ -2,6 +2,8 @@ import user_agents
 
 PROTOCOLE = "HTTP/1.1"
 
+COMPTE = 0
+
 
 def traite_requête(message):
     """
@@ -36,11 +38,16 @@ def traite_requête(message):
         agent = user_agents.parse(user_agent)
         print(agent)
 
+    message = "Bonjour !"
+    global COMPTE
+    COMPTE += 1
+    message += f"\nVous avez rafraîchi cette page {COMPTE} fois :)"
+
     return envoie_réponse(
         200,
         "0K",
         {"Content-Type": "text/plain", "Connection": "keep-alive"},
-        "Bonjour, monde",
+        message,
     )
 
 
