@@ -1,4 +1,5 @@
 import os
+import signal
 import socket
 import threading
 from servilo import réponse_pour_route
@@ -7,6 +8,8 @@ from http import HTTPStatus
 PORT = 5000
 TAILLE_REQUÊTE = 1020
 PROTOCOLE = "HTTP/1.1"
+
+SHUTDOW_EVENT = threading.Event()
 
 
 def traite_requête(message):
@@ -70,7 +73,7 @@ def main_loop():
         connection, adresse = serveur.accept()
         print(f"Connection reçue: {adresse=}")
         with connection:
-            while True:
+            while not SHUTDOW_EVENT.is_set():
                 données = connection.recv(TAILLE_REQUÊTE)
                 if not données:
                     return
@@ -81,11 +84,19 @@ def main_loop():
                     connection.sendall(données)
 
 
+def ctrl_c_handler(*args):
+    SHUTDOW_EVENT.set()
+
+
 def main():
+    signal.signal(signal.SIGINT, ctrl_c_handler)
     pid = os.getpid()
     thread = threading.Thread(target=main_loop)
     thread.start()
-    input("Appuyez sur une touche pour quitter\n")
+    try:
+        input("Appuyez sur une touche pour quitter\n")
+    except EOFError:
+        pass
     os.kill(pid, 9)
 
 

@@ -17,7 +17,7 @@ def réponse_pour_route(route, verbe, headers):
     texte = f"""<!DOCTYPE html>
 <html>
 <head>
-    <title>Servilo :) </title>
+    <title>Servilo</title>
 </head>
 
 <body>
