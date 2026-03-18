@@ -1,3 +1,6 @@
+from pathlib import Path
+
+
 COMPTE = 0
 
 
@@ -10,24 +13,18 @@ class Réponse:
 
 def réponse_pour_route(route, verbe, headers):
     print(verbe, route)
+
+    if verbe == "GET":
+        return servir_fichier(route)
+    else:
+        return Réponse(texte=f"verbe inconnu: {verbe}", code=405)
+
+
+def servir_fichier(route):
     réponse = Réponse()
 
-    global COMPTE
-    COMPTE += 1
-    texte = f"""<!DOCTYPE html>
-<html>
-<head>
-    <title>Servilo</title>
-</head>
-
-<body>
-<h2>Bonjour monde!</h2>
-
-Vous avez rafraîchi cette page <code>{COMPTE}</code> fois
-
-</body>
-</html>
-    """
+    chemin = Path(route)
+    texte = chemin.read_text()
 
     réponse.texte = texte
 
