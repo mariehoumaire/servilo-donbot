@@ -12,8 +12,6 @@ class Réponse:
 
 
 def réponse_pour_route(route, verbe, headers):
-    print(verbe, route)
-
     if verbe == "GET":
         return servir_fichier(route)
     else:
