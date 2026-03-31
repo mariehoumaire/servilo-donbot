@@ -43,7 +43,7 @@ def traite_requête(message):
     status = HTTPStatus(réponse.code)
     print(">", status.value)
 
-    taille = len(réponse.texte.encode()) + 4
+    taille = len(réponse.texte.encode(encoding="utf-8"))
     headers = réponse.headers
 
     headers["Content-Length"] = taille
